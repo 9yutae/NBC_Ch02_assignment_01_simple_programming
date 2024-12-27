@@ -1,15 +1,16 @@
-#include <iostream>
+ï»¿#include <iostream>
+#include <algorithm>
 #define allout(MSG, X)	std::cout << " " << MSG << " "; for(auto w:X) std::cout << w << " "
 #define line std::cout << "\n-------------------------------------------------------------\n"
 #define endl "\n"
 
 using namespace std;
 
-void insert_sort(int* arr, size_t size, bool flag = true);
-void bubble_sort(int* arr, size_t size, bool flag = true);
-void select_sort(int* arr, size_t size, bool flag = true);
+void insert_sort(int* arr, size_t size, int flag);
+void bubble_sort(int* arr, size_t size, int flag);
+void select_sort(int* arr, size_t size, int flag);
 
-// ÇÕ°è ±¸ÇÏ±â
+// í•©ê³„ êµ¬í•˜ê¸°
 int getSum(int* arr, size_t size) {
 	int sum = 0;
 	for (int i = 0;i < size;i++) sum += arr[i];
@@ -17,7 +18,7 @@ int getSum(int* arr, size_t size) {
 	return sum;
 }
 
-// Æò±Õ ±¸ÇÏ±â
+// í‰ê·  êµ¬í•˜ê¸°
 double getAverage(int* arr, size_t size) {
 	return (double)getSum(arr, size) / size;
 }
@@ -29,46 +30,56 @@ int main() {
 	int arr[5];
 	cout << "Enter 5 numbers seperated by spaces" << endl;
 
-	// 5°³ÀÇ ¼ıÀÚ ÀÔ·Â ¹Ş±â
+	// 5ê°œì˜ ìˆ«ì ì…ë ¥ ë°›ê¸°
 	for (int i = 0;i < 5;i++) {
 		cin >> arr[i];
 	}
 
 	size_t size = sizeof(arr) / sizeof(arr[0]);
 
-	// ÃÑÇÕ ¹× Æò±Õ Ãâ·ÂÇÏ±â
+	// ì´í•© ë° í‰ê·  ì¶œë ¥í•˜ê¸°
 	cout << "The total of the array is " << getSum(arr, size) << endl;
 	cout << "The average of the array is " << getAverage(arr, size) << endl;
 	line;
 
-	// »ğÀÔ Á¤·Ä
-	allout("Before insert_sort() = ", arr);
-	insert_sort(arr, size);
-	allout("\n After Ascending insert_sort() = ", arr);
-	insert_sort(arr, size, 0);
-	allout("\n After Descending insert_sort() = ", arr);
+	cout << "Select the sorting method (1: Ascending, 2: Descending)" << endl;
+	int method;
+	cin >> method;
+	while (method != 0 && method != 1) {
+		cout << "Wrong selection! Select the sorting method (1: Ascending, 2: Descending)" << endl;
+		cin >> method;
+	}
+
+	allout("Before sorting() = ", arr);
 	line;
 
-	// ±³È¯ Á¤·Ä
-	select_sort(arr, size);
-	allout("After Ascending bubble_sort() = ", arr);
-	select_sort(arr, size, 0);
-	allout("\n After Descending bubble_sort() = ", arr);
+	// ì‚½ì… ì •ë ¬
+	int arr1[5];
+	copy(arr, arr + size, arr1);
+	insert_sort(arr1, size, method);
+	allout("\n After insert_sort() = ", arr1);
 	line;
 
-	// ¼±ÅÃ Á¤·Ä
-	select_sort(arr, size);
-	allout("After Ascending select_sort() = ", arr);
-	select_sort(arr, size, 0);
-	allout("\n After Descending select_sort() = ", arr);
+	// êµí™˜ ì •ë ¬
+	int arr2[5];
+	copy(arr, arr + size, arr2);
+	select_sort(arr2, size, method);
+	allout("After bubble_sort() = ", arr2);
+	line;
+
+	// ì„ íƒ ì •ë ¬
+	int arr3[5];
+	copy(arr, arr + size, arr3);
+	select_sort(arr3, size, method);
+	allout("After select_sort() = ", arr3);
 	line;
 
 	return 0;
 }
 
-// »ğÀÔ Á¤·Ä (Insert Sort)
-void insert_sort(int* arr, size_t size, bool flag) {
-	if (!flag) {
+// ì‚½ì… ì •ë ¬ (Insert Sort)
+void insert_sort(int* arr, size_t size, int flag) {
+	if (flag == 2) {
 		for (int i = 0; i < size; i++) arr[i] *= -1;
 	}
 
@@ -83,14 +94,14 @@ void insert_sort(int* arr, size_t size, bool flag) {
 		arr[j + 1] = key;
 	}
 
-	if (!flag) {
+	if (flag == 2) {
 		for (int i = 0; i < size; i++) arr[i] *= -1;
 	}
 }
 
-// ±³È¯ Á¤·Ä (Bubble Sort)
-void bubble_sort(int* arr, size_t size, bool flag) {
-	if (!flag) {
+// êµí™˜ ì •ë ¬ (Bubble Sort)
+void bubble_sort(int* arr, size_t size, int flag) {
+	if (flag == 2) {
 		for (int i = 0; i < size; i++) arr[i] *= -1;
 	}
 
@@ -108,14 +119,14 @@ void bubble_sort(int* arr, size_t size, bool flag) {
 		if (isSorted) break;
 	}
 
-	if (!flag) {
+	if (flag == 2) {
 		for (int i = 0; i < size; i++) arr[i] *= -1;
 	}
 }
 
-// ¼±ÅÃ Á¤·Ä (Select Sort)
-void select_sort(int* arr, size_t size, bool flag) {
-	if (!flag) {
+// ì„ íƒ ì •ë ¬ (Select Sort)
+void select_sort(int* arr, size_t size, int flag) {
+	if (flag == 2) {
 		for (int i = 0; i < size; i++) arr[i] *= -1;
 	}
 
@@ -134,7 +145,7 @@ void select_sort(int* arr, size_t size, bool flag) {
 		arr[minidx] = tmp;
 	}
 
-	if (!flag) {
+	if (flag == 2) {
 		for (int i = 0; i < size; i++) arr[i] *= -1;
 	}
 }
